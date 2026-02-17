@@ -72,7 +72,7 @@ function Projects() {
             <ProjectCard
               imgPath={ImageCopyImg}
               isBlog={false}
-              title="Image Copy"
+              title="Website"
               description="UI-focused project/demo page showcasing layout and visual components."
               ghLink="https://github.com/YOUR_USERNAME/image-copy"
               demoLink="https://YOUR_DEMO_LINK"
@@ -82,7 +82,7 @@ function Projects() {
             <ProjectCard
               imgPath={Img}
               isBlog={false}
-              title="Image Copy"
+              title="AlgoritmEdu"
               description="UI-focused project/demo page showcasing layout and visual components."
               ghLink="https://algoritmedu.uz/"
               demoLink="https://algoritmedu.uz/"

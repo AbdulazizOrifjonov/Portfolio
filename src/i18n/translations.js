@@ -107,7 +107,7 @@ export const translations = {
       intro1: "Salom hammaga! Men",
       name: "Abdulazizbek",
       intro2: "—",
-      location: "Toshkent, O‘zbekiston",
+      location: "Toshkentdanman, O‘zbekiston",
       line1a: "Men",
       role: "Frontend dasturchiman",
       line1b: "va 1.5 yillik amaliy tajribaga egaman.",
