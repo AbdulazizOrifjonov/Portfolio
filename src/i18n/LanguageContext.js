@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, { createContext, useContext, useMemo, useState, useCallback } from "react";
 import { translations } from "./translations";
 
 const LanguageContext = createContext(null);
@@ -6,10 +6,7 @@ const LanguageContext = createContext(null);
 function safeGet(obj, path) {
   return path
     .split(".")
-    .reduce(
-      (acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined),
-      obj
-    );
+    .reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
 }
 
 export function LanguageProvider({ children }) {
@@ -23,33 +20,30 @@ export function LanguageProvider({ children }) {
 
   const [lang, setLangState] = useState(initial);
 
-  const setLang = (next) => {
+  const setLang = useCallback((next) => {
     setLangState(next);
     try {
       localStorage.setItem("lang", next);
-    } catch {
-      // ignore
-    }
-  };
+    } catch {}
+  }, []);
 
-  const t = (key, fallback) => {
-    const pack = translations[lang] || translations.uz;
-    const value = safeGet(pack, key);
-    if (value !== undefined) return value;
+  const t = useCallback(
+    (key, fallback) => {
+      const pack = translations[lang] || translations.uz;
+      const value = safeGet(pack, key);
+      if (value !== undefined) return value;
 
-    const enValue = safeGet(translations.en, key);
-    if (enValue !== undefined) return enValue;
+      const enValue = safeGet(translations.en, key);
+      if (enValue !== undefined) return enValue;
 
-    return fallback !== undefined ? fallback : key;
-  };
-
-  const value = useMemo(() => ({ lang, setLang, t }), [lang]);
-
-  return (
-    <LanguageContext.Provider value={value}>
-      {children}
-    </LanguageContext.Provider>
+      return fallback !== undefined ? fallback : key;
+    },
+    [lang]
   );
+
+  const value = useMemo(() => ({ lang, setLang, t }), [lang, setLang, t]);
+
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }
 
 export function useLanguage() {
