@@ -12,7 +12,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 function ResumeNew() {
   const [width, setWidth] = useState(window.innerWidth);
-  const [numPages, setNumPages] = useState(null);
+  const [numPages, setNumPages] = useState(0);
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
@@ -25,20 +25,42 @@ function ResumeNew() {
       <Container fluid className="resume-section">
         <Particle />
 
-        <Row className="resume">
-          <Document
-            file={pdf}
-            onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-            className="d-flex flex-column align-items-center"
+        <Row style={{ justifyContent: "center", marginBottom: "20px" }}>
+          <Button
+            variant="primary"
+            href="/resume-pdf"
+            style={{ maxWidth: "260px" }}
           >
-            {Array.from(new Array(numPages), (el, index) => (
-              <Page
-                key={`page_${index + 1}`}
-                pageNumber={index + 1}
-                scale={width > 786 ? 1.7 : 0.6}
-              />
-            ))}
-          </Document>
+            <AiOutlineDownload />
+            &nbsp;PDF ni ustiga bosing 
+          </Button>
+        </Row>
+
+        <Row className="resume" style={{ justifyContent: "center" }}>
+          <a
+            href={pdf}
+            target="_blank"
+            rel="noreferrer"
+            style={{ cursor: "pointer" }}
+          >
+            <Document
+              file={pdf}
+              onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+              loading="PDF yuklanmoqda..."
+              error="PDF ochilmadi"
+              className="d-flex flex-column align-items-center"
+            >
+              {Array.from({ length: numPages }, (_, i) => (
+                <Page
+                  key={`page_${i + 1}`}
+                  pageNumber={i + 1}
+                  scale={width > 786 ? 1.8 : 0.9}
+                  renderTextLayer={false}
+                  renderAnnotationLayer={false}
+                />
+              ))}
+            </Document>
+          </a>
         </Row>
       </Container>
     </div>
